@@ -1,9 +1,11 @@
+import logoSvg from '../assets/img/pizza-logo.svg';
+
 function Header() {
   return (
     <div className="header">
       <div className="container">
         <div className="header__logo">
-          <img width="38" src="./img/pizza-logo.svg" alt="Pizza logo" />
+          <img width="38" src={logoSvg} alt="Pizza logo" />
           <div>
             <h1>Ovruch Pizza</h1>
             <p>найсмачніша піца у всесвіті</p>

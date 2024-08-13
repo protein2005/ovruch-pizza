@@ -1,10 +1,25 @@
+import axios from 'axios';
 import Categories from './components/Categories';
 import Header from './components/Header';
 import PizzaBlock from './components/PizzaBlock';
 import Sort from './components/Sort';
-import './scss/app.scss';
+
+import { useEffect, useState } from 'react';
 
 function App() {
+  const [pizzas, setPizzas] = useState([]);
+
+  useEffect(() => {
+    (async function fetchData() {
+      try {
+        const { data } = await axios.get('https://66b9e544fa763ff550fa03e6.mockapi.io/pizza');
+        setPizzas(data);
+      } catch (error) {
+        alert('Не вдалось отримати дані!');
+      }
+    })();
+  }, []);
+
   return (
     <div className="wrapper">
       <Header />
@@ -16,10 +31,9 @@ function App() {
           </div>
           <h2 className="content__title">Усі піци</h2>
           <div className="content__items">
-            <PizzaBlock title={'Пепероні Фреш з перцем'} price={300} />
-            <PizzaBlock title={'Сирна'} price={250} />
-            <PizzaBlock title={'Курча барбекю'} price={150} />
-            <PizzaBlock title={'Кисло-солодке курча'} price={450} />
+            {pizzas.map((obj) => (
+              <PizzaBlock key={obj.id} {...obj} />
+            ))}
           </div>
         </div>
       </div>
