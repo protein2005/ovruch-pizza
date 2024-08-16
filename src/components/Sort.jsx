@@ -1,6 +1,12 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
-function Sort({ value, onChangeSort }) {
+import { setSort } from '../redux/slices/filterSlice';
+
+function Sort() {
+  const sortType = useSelector((state) => state.filter.sort);
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(false);
 
   const list = [
@@ -11,10 +17,10 @@ function Sort({ value, onChangeSort }) {
     { name: 'алфавітом', sortProperty: 'name' },
   ];
 
-  const sortName = value.name;
+  const sortName = sortType.name;
 
-  const onClickListItem = (index) => {
-    onChangeSort(index);
+  const onClickListItem = (obj) => {
+    dispatch(setSort(obj));
     setOpen(!open);
   };
 
@@ -41,7 +47,7 @@ function Sort({ value, onChangeSort }) {
             {list.map((obj, index) => (
               <li
                 onClick={() => onClickListItem(obj)}
-                className={value.name === obj.name ? 'active' : ''}
+                className={sortType.name === obj.name ? 'active' : ''}
                 key={index}>
                 {obj.name}
               </li>

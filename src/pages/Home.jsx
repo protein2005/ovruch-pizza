@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { useSelector } from 'react-redux';
 
 import axios from 'axios';
 
@@ -10,15 +11,13 @@ import Pagination from '../components/Pagination';
 import { SearchContext } from '../App';
 
 function Home() {
+  const categoryId = useSelector((state) => state.filter.categoryId);
+  const sortType = useSelector((state) => state.filter.sort);
+
   const { searchValue } = useContext(SearchContext);
   const [pizzas, setPizzas] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [categoryId, setCategoryId] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortType, setSortType] = useState({
-    name: 'популярністю (за спаданням)',
-    sortProperty: 'rating',
-  });
 
   useEffect(() => {
     (async function fetchData() {
@@ -39,19 +38,11 @@ function Home() {
     window.scrollTo(0, 0);
   }, [categoryId, sortType, searchValue, currentPage]);
 
-  const onClickCategory = (index) => {
-    setCategoryId(index);
-  };
-
-  const onChangeSort = (index) => {
-    setSortType(index);
-  };
-
   return (
     <div className="container">
       <div className="content__top">
-        <Categories value={categoryId} onClickCategory={onClickCategory} />
-        <Sort value={sortType} onChangeSort={onChangeSort} />
+        <Categories />
+        <Sort />
       </div>
       <h2 className="content__title">Усі піци</h2>
       <div className="content__items">
