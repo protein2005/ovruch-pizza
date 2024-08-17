@@ -1,13 +1,30 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 import styles from './Search.module.scss';
 import { SearchContext } from '../../App';
 
 function Search() {
   const { searchValue, setSearchValue } = useContext(SearchContext);
+  const [delayedSearchValue, setDelayedSearchValue] = useState(searchValue);
+  const inpuRef = useRef();
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setSearchValue(delayedSearchValue);
+    }, 600);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [delayedSearchValue, setSearchValue]);
+
+  const onChangeSearchValue = (event) => {
+    setDelayedSearchValue(event.target.value);
+  };
 
   const onClickClear = () => {
-    setSearchValue('');
+    setDelayedSearchValue('');
+    inpuRef.current.focus();
   };
 
   return (
@@ -46,9 +63,10 @@ function Search() {
         />
       </svg>
       <input
+        ref={inpuRef}
         className={styles.input}
-        onChange={(e) => setSearchValue(e.target.value)}
-        value={searchValue}
+        onChange={onChangeSearchValue}
+        value={delayedSearchValue}
         placeholder="Пошук піци..."
       />
       {searchValue && (
