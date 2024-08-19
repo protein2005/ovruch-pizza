@@ -30,7 +30,7 @@ function CartItem({ id, imageUrl, title, type, size, price, count }) {
       </div>
       <div class="cart__item-count">
         <div
-          onClick={onClickMinus}
+          onClick={count > 1 ? onClickMinus : null}
           class="button button--outline button--circle cart__item-count-minus">
           <svg
             width="10"

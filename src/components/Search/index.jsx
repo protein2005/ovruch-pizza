@@ -1,22 +1,24 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSearchValue } from '../../redux/slices/filterSlice';
 
 import styles from './Search.module.scss';
-import { SearchContext } from '../../App';
 
 function Search() {
-  const { searchValue, setSearchValue } = useContext(SearchContext);
+  const searchValue = useSelector((state) => state.filter.searchValue);
+  const dispatch = useDispatch();
   const [delayedSearchValue, setDelayedSearchValue] = useState(searchValue);
   const inpuRef = useRef();
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      setSearchValue(delayedSearchValue);
+      dispatch(setSearchValue(delayedSearchValue));
     }, 600);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [delayedSearchValue, setSearchValue]);
+  }, [delayedSearchValue, dispatch]);
 
   const onChangeSearchValue = (event) => {
     setDelayedSearchValue(event.target.value);

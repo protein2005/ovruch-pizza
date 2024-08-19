@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,7 +11,8 @@ import PizzaBlock from '../components/PizzaBlock';
 import Sort, { list } from '../components/Sort';
 import Skeleton from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
-import { SearchContext } from '../App';
+import ErrorData from '../components/ErrorData';
+import NotFoundPizza from '../components/NotFoundPizza';
 
 function Home() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ function Home() {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const { searchValue } = useContext(SearchContext);
+  const searchValue = useSelector((state) => state.filter.searchValue);
 
   //Якщо змінився categoryId, sortType, searchValue або currentPage, то змінюємо URL
   useEffect(() => {
@@ -38,7 +39,7 @@ function Home() {
       navigate(`?${query}`);
     }
     isMounted.current = true;
-  }, [categoryId, sortType, searchValue, currentPage, navigate]);
+  }, [categoryId, sortType, currentPage, navigate]);
 
   //Якщо був перший рендер компонента і в URL є параметри, то встановлюємо фільтри
   useEffect(() => {
@@ -63,7 +64,7 @@ function Home() {
       const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
       dispatch(fetchPizzas({ category, sortBy, order, currentPage }));
     })();
-  }, [categoryId, sortType, searchValue, currentPage, dispatch]);
+  }, [categoryId, sortType, currentPage, dispatch]);
 
   return (
     <div className="container">
@@ -72,27 +73,25 @@ function Home() {
         <Sort />
       </div>
       {status === 'error' ? (
-        <div className="content__error-info">
-          <h2>Виникла помилка 😕</h2>
-          <p>
-            На жаль, піци не знайдено.
-            <br />
-            Спробуйте оновити сторінку.
-          </p>
-        </div>
+        <ErrorData />
       ) : (
         <>
           <h2 className="content__title">Усі піци</h2>
           <div className="content__items">
             {status === 'loading'
               ? [...Array(4)].map((_, index) => <Skeleton key={index} />)
-              : items
-                  .filter((item) =>
+              : (() => {
+                  const filteredItems = items.filter((item) =>
                     item.title.toLowerCase().includes(searchValue.trim().toLowerCase()),
-                  )
-                  .map((item) => <PizzaBlock key={item.id} {...item} />)}
+                  );
+                  return filteredItems.length > 0 ? (
+                    filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)
+                  ) : (
+                    <NotFoundPizza />
+                  );
+                })()}
           </div>
-          <Pagination />
+          {searchValue ? '' : <Pagination />}
         </>
       )}
     </div>

@@ -25,12 +25,26 @@ body {
 .content {
   padding: 40px 0;
 
+  &__notFoundPizza {
+    height: 280px;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    text-align: center;
+    padding: 20px;
+    font-size: 22px;
+
+    h2 {
+      margin-top: 50px;
+      margin-bottom: 10px;
+    }
+  }
+
   &__error-info {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 300px;
+    height: 400px;
 
     h2 {
       font-size: 32px;
@@ -38,16 +52,16 @@ body {
     }
 
     p {
+      text-align: center;
       font-size: 18px;
       line-height: 145.4%;
       letter-spacing: 0.01em;
       color: #777777;
+      margin-bottom: 10px;
     }
 
     .button--black {
-      padding: 12px 0 14px;
-      width: 230px;
-      margin: 0 auto;
+      padding: 12px;
       font-weight: 600;
       font-size: 18px;
     }
@@ -361,7 +375,7 @@ body {
 
     img {
       display: block;
-      width: 300px;
+      width: 200px;
       margin: 45px auto 60px;
     }
 
