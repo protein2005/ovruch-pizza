@@ -20,7 +20,7 @@ function Header() {
             </div>
           </div>
         </Link>
-        {location.pathname === '/' && (
+        {location.pathname !== '/cart' && (
           <>
             <Search />
             <div className="header__cart">
