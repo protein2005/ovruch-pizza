@@ -5,10 +5,10 @@ import { setSearchValue } from '../../redux/slices/filterSlice';
 import styles from './Search.module.scss';
 
 function Search() {
-  const searchValue = useSelector((state) => state.filter.searchValue);
+  const searchValue = useSelector((state: any) => state.filter.searchValue);
   const dispatch = useDispatch();
   const [delayedSearchValue, setDelayedSearchValue] = useState(searchValue);
-  const inpuRef = useRef();
+  const inpuRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
@@ -20,13 +20,13 @@ function Search() {
     };
   }, [delayedSearchValue, dispatch]);
 
-  const onChangeSearchValue = (event) => {
+  const onChangeSearchValue = (event: any) => {
     setDelayedSearchValue(event.target.value);
   };
 
   const onClickClear = () => {
     setDelayedSearchValue('');
-    inpuRef.current.focus();
+    inpuRef.current?.focus();
   };
 
   return (

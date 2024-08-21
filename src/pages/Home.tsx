@@ -3,7 +3,7 @@ import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setFiltres } from '../redux/slices/filterSlice';
+import { setFiltres, setCategoryId, setPageCount } from '../redux/slices/filterSlice';
 import { fetchPizzas } from '../redux/slices/pizzaSlice';
 
 import Categories from '../components/Categories';
@@ -14,19 +14,19 @@ import Pagination from '../components/Pagination';
 import ErrorData from '../components/ErrorData';
 import NotFoundPizza from '../components/NotFoundPizza';
 
-function Home() {
+const Home: React.FC = () => {
   const navigate = useNavigate();
 
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortType = useSelector((state) => state.filter.sort);
-  const currentPage = useSelector((state) => state.filter.pageCount);
-  const { items, status } = useSelector((state) => state.pizza);
+  const categoryId = useSelector((state: any) => state.filter.categoryId);
+  const sortType = useSelector((state: any) => state.filter.sort);
+  const currentPage = useSelector((state: any) => state.filter.pageCount);
+  const { items, status } = useSelector((state: any) => state.pizza);
   const dispatch = useDispatch();
 
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const searchValue = useSelector((state) => state.filter.searchValue);
+  const searchValue = useSelector((state: any) => state.filter.searchValue);
 
   //Якщо змінився categoryId, sortType, searchValue або currentPage, то змінюємо URL
   useEffect(() => {
@@ -62,14 +62,20 @@ function Home() {
       const category = categoryId !== 0 ? `category=${categoryId}` : '';
       const sortBy = sortType.sortProperty.replace('-', '');
       const order = sortType.sortProperty.includes('-') ? 'asc' : 'desc';
-      dispatch(fetchPizzas({ category, sortBy, order, currentPage }));
+      dispatch(
+        // @ts-ignore
+        fetchPizzas({ category, sortBy, order, currentPage }),
+      );
     })();
   }, [categoryId, sortType, currentPage, dispatch]);
 
   return (
     <div className="container">
       <div className="content__top">
-        <Categories />
+        <Categories
+          value={categoryId}
+          onChangeCategory={(index) => dispatch(setCategoryId(index))}
+        />
         <Sort />
       </div>
       {status === 'error' ? (
@@ -81,21 +87,28 @@ function Home() {
             {status === 'loading'
               ? [...Array(4)].map((_, index) => <Skeleton key={index} />)
               : (() => {
-                  const filteredItems = items.filter((item) =>
+                  const filteredItems = items.filter((item: any) =>
                     item.title.toLowerCase().includes(searchValue.trim().toLowerCase()),
                   );
                   return filteredItems.length > 0 ? (
-                    filteredItems.map((item) => <PizzaBlock key={item.id} {...item} />)
+                    filteredItems.map((item: any) => <PizzaBlock key={item.id} {...item} />)
                   ) : (
                     <NotFoundPizza />
                   );
                 })()}
           </div>
-          {searchValue ? '' : <Pagination />}
+          {searchValue ? (
+            ''
+          ) : (
+            <Pagination
+              currentPage={currentPage}
+              onChangePage={(count) => dispatch(setPageCount(count))}
+            />
+          )}
         </>
       )}
     </div>
   );
-}
+};
 
 export default Home;

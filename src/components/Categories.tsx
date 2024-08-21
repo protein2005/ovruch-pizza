@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryId } from '../redux/slices/filterSlice';
 
-function Categories() {
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const dispatch = useDispatch();
+type CategoriesProps = {
+  value: number;
+  onChangeCategory: (index: number) => void;
+};
 
+const Categories: React.FC<CategoriesProps> = ({ value, onChangeCategory }) => {
   const categories = ['Усі', "М'ясні", 'Вегетаріанська', 'Гриль', 'Гострі', 'Закриті'];
 
   return (
@@ -14,14 +14,14 @@ function Categories() {
         {categories.map((categoryName, index) => (
           <li
             key={index}
-            onClick={() => dispatch(setCategoryId(index))}
-            className={index === categoryId ? 'active' : ''}>
+            onClick={() => onChangeCategory(index)}
+            className={index === value ? 'active' : ''}>
             {categoryName}
           </li>
         ))}
       </ul>
     </div>
   );
-}
+};
 
 export default Categories;

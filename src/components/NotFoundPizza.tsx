@@ -1,8 +1,7 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 
 function NotFoundPizza() {
-  const searchValue = useSelector((state) => state.filter.searchValue);
+  const searchValue = useSelector((state: any) => state.filter.searchValue);
 
   return (
     <div className="content__notFoundPizza">
