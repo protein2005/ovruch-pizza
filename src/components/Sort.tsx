@@ -16,7 +16,7 @@ export const list: SortItem[] = [
   { name: 'алфавітом', sortProperty: 'name' },
 ];
 
-function Sort() {
+const Sort: React.FC = () => {
   const sortType = useSelector((state: any) => state.filter.sort);
   const dispatch = useDispatch();
 
@@ -63,6 +63,6 @@ function Sort() {
       )}
     </div>
   );
-}
+};
 
 export default Sort;

@@ -6,7 +6,7 @@ import Cart from './pages/Cart';
 import FullPizza from './pages/FullPizza';
 import MainLayout from './layouts/MainLayout';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
@@ -17,6 +17,6 @@ function App() {
       </Route>
     </Routes>
   );
-}
+};
 
 export default App;

@@ -6,7 +6,7 @@ import Search from './Search';
 import { selectCart } from '../redux/slices/cartSlice';
 import { useEffect, useRef } from 'react';
 
-function Header() {
+const Header: React.FC = () => {
   const { items, totalPrice, totalCount } = useSelector(selectCart);
   const location = useLocation();
   const isMounted = useRef(false);
@@ -74,6 +74,6 @@ function Header() {
       </div>
     </div>
   );
-}
+};
 
 export default Header;

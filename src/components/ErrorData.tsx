@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ErrorData() {
+const ErrorData: React.FC = () => {
   return (
     <div className="content__error-info">
       <h2>Виникла помилка 😕</h2>
@@ -10,6 +10,6 @@ function ErrorData() {
       </a>
     </div>
   );
-}
+};
 
 export default ErrorData;

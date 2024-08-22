@@ -4,7 +4,7 @@ import { setSearchValue } from '../../redux/slices/filterSlice';
 
 import styles from './Search.module.scss';
 
-function Search() {
+const Search: React.FC = () => {
   const searchValue = useSelector((state: any) => state.filter.searchValue);
   const dispatch = useDispatch();
   const [delayedSearchValue, setDelayedSearchValue] = useState<string>(searchValue);
@@ -82,6 +82,6 @@ function Search() {
       )}
     </div>
   );
-}
+};
 
 export default Search;

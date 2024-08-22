@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 
-function NotFoundPizza() {
+const NotFoundPizza: React.FC = () => {
   const searchValue = useSelector((state: any) => state.filter.searchValue);
 
   return (
@@ -11,6 +11,6 @@ function NotFoundPizza() {
       </p>
     </div>
   );
-}
+};
 
 export default NotFoundPizza;
