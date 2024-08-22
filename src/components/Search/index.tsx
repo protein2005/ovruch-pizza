@@ -7,7 +7,7 @@ import styles from './Search.module.scss';
 function Search() {
   const searchValue = useSelector((state: any) => state.filter.searchValue);
   const dispatch = useDispatch();
-  const [delayedSearchValue, setDelayedSearchValue] = useState(searchValue);
+  const [delayedSearchValue, setDelayedSearchValue] = useState<string>(searchValue);
   const inpuRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function Search() {
     };
   }, [delayedSearchValue, dispatch]);
 
-  const onChangeSearchValue = (event: any) => {
+  const onChangeSearchValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDelayedSearchValue(event.target.value);
   };
 

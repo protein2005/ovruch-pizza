@@ -1,15 +1,33 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params) => {
+export type FetchParams = Record<string, number>;
+
+export const fetchPizzas = createAsyncThunk('pizza/fetchPizzasStatus', async (params: FetchParams) => {
   const { category, sortBy, order, currentPage } = params;
-  const { data } = await axios.get(
+  const { data } = await axios.get<Pizza[]>(
     `https://66b9e544fa763ff550fa03e6.mockapi.io/pizza?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}`,
   );
   return data;
 });
 
-const initialState = {
+type Pizza = {
+  id: string;
+  imageUrl: string;
+  name: string;
+  types: number[];
+  sizes: number[];
+  price: number;
+  category: number;
+  rating: number;
+};
+
+interface PizzaSliceState {
+  items: Pizza[];
+  status: string;
+}
+
+const initialState: PizzaSliceState = {
   items: [],
   status: 'loading',
 };

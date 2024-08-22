@@ -47,9 +47,9 @@ const Home: React.FC = () => {
       const { sortProperty, categoryId, currentPage } = qs.parse(window.location.search.slice(1));
       dispatch(
         setFiltres({
-          categoryId: Number(categoryId),
-          sort: list.find((item) => item.sortProperty === sortProperty),
-          pageCount: Number(currentPage),
+          categoryId: String(categoryId),
+          sort: Object(list.find((item) => item.sortProperty === sortProperty)),
+          pageCount: String(currentPage),
         }),
       );
       isSearch.current = true;
